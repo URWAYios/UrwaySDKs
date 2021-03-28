@@ -78,7 +78,7 @@ class PaymentInteractor: IPaymentInteractor {
             "udf3": udf3,
             "udf4": udf4,
             "udf5": udf5,
-            "applePayId": "\(merchantidentifier)",
+            "applePayId": "applepay",
             "action": action,
             "password": "\(password)",
             "merchantIp": "1.2.3.4",
@@ -137,7 +137,16 @@ class PaymentInteractor: IPaymentInteractor {
                     }
                     
                      
-                    if let payID = receivedTodo["payid"] as? String{ self.newURL = "\(self.newURL)?paymentid=\(payID)" }
+                    if let payID = receivedTodo["payid"] as? String{
+                        let string = self.newURL
+                        if string.contains("?") {
+                            print("NEW RUNALI check : \(string)")
+                            self.newURL = "\(self.newURL)paymentid=\(payID)"
+                        }
+                        else{
+                        self.newURL = "\(self.newURL)?paymentid=\(payID)"
+                        }
+                    }
                     
                     if self.newURL.isEmpty , let code =  receivedTodo["responseCode"] as? String{
                         self.presenter?.apiResult(result: .failure("\(code)"), responce: receivedTodo, error: error);
@@ -152,18 +161,26 @@ class PaymentInteractor: IPaymentInteractor {
                         fullURL = self.newURL
                     }*/
                     
-                    if tockenName == "D"{
-                        if let payID = receivedTodo["payid"] as? String{
-                            self.newURL = "\(self.newURL)?paymentid=\(payID)"
-                            fullURL = "\(self.newURL)\(payID)"
-                        }else{
-                            fullURL = self.newURL
-                        }
-                        //fullURL = "https://payments-dev.urway-tech.com/URWAYPGService/3DRedirect.jsp?paymentid=\(payID)"
-                    } else {
-                        fullURL = self.newURL
-                    }
-                    
+//                    if tockenName == "D"{
+//                        let string = self.newURL
+//                        if string.contains("?") {
+//                            print("NEW RUNALI : \(string)")
+//
+//                        }
+//                        if let payID = receivedTodo["payid"] as? String{
+//                            print("the NEW URL : \(self.newURL)")
+//                            self.newURL = "\(self.newURL)?paymentid=\(payID)"
+//                            fullURL = "\(self.newURL)\(payID)"
+//                            print("the NEW URL1 : \(fullURL)")
+//                        }else{
+//                            fullURL = self.newURL
+//                            print("the NEW URL2 : \(fullURL)")
+//                        }
+//                        //fullURL = "https://payments-dev.urway-tech.com/URWAYPGService/3DRedirect.jsp?paymentid=\(payID)"
+//                    } else {
+                       fullURL = self.newURL
+//                    }
+                    print("the NEW URL : \(self.newURL)")
                     print("the url is : \(fullURL)")
 
                     
@@ -218,5 +235,3 @@ extension PaymentInteractor {
     } 
     
 }
-
-
