@@ -1,2 +1,0 @@
-# UrwaySDK
-URWAY
